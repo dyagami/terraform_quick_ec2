@@ -42,20 +42,22 @@ A Terraform configuration to quickly spin up an AWS EC2 VM with SSH/RDP over-the
     #  Enter OS name - use at least 2 words separated by spaces to avoid mismatch
     #
     #  Enter a value: Ubuntu Server
-    
+    ```
+
     Describe the operating system you wish to use for the virtual machine in at least two words separated  by spaces. Code fetches the latest image owned by Amazon and matching your description. The matching is case-insensitive.
 
+    ```
     # Changes to Outputs:
     #  + ami_link           = "https://eu-north-1.console.aws.amazon.com/ec2/home?region=eu-north-1#ImageDetails:imageId=ami-068011ee7bf544493"
     #  + image_ami_id       = "ami-068011ee7bf544493"
     #  + image_name         = "ubuntu/images-testing/hvm-ssd-gp3/ubuntu-questing-daily-amd64-server-20250601"
     #  + instance_public_ip = (known after apply)
+    ```
 
     Check the AMI image ID in the Amazon AMI database to make sure you are satisfied with the image. There should be a direct link to the image in Amazon console for your region in the output of the "terraform plan" command.
 
-    terraform apply
+    `terraform apply`
 
-    # If you are done using the EC2:
+   # If you are done using the EC2
 
-    terraform destroy
-    ```
+    `terraform destroy`
