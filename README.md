@@ -58,6 +58,6 @@ A Terraform configuration to quickly spin up an AWS EC2 VM with SSH/RDP over-the
 
     `terraform apply`
 
-   # If you are done using the EC2
+   ### If you are done using the EC2
 
     `terraform destroy`
