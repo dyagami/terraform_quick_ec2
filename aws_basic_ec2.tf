@@ -19,19 +19,19 @@ data "aws_ami" "region_ami" {
   }
 }
 
-# deploy a new t3_micro ec2 vm resource
+# deploy a new ec2 vm resource
 
 resource "aws_instance" "terraform_managed_ec2" {
   provider                    = aws
   ami                         = data.aws_ami.region_ami.image_id
   instance_type               = var.aws_instance_type
   associate_public_ip_address = true
-  vpc_security_group_ids      = [aws_security_group.ingress_ssh_egress_any.id]
+  vpc_security_group_ids      = [aws_security_group.ingress_remote_management.id]
   subnet_id                   = aws_subnet.dev_subnet.id
   key_name                    = aws_key_pair.terraform_admin_ssh_key.id
   tags = {
-    name          = "terraform_managed_ec2"
-    date_created  = timestamp()
+    Name          = "terraform_managed_ec2"
     public_access = true
+    terraform_managed = true
   }
 }

@@ -1,21 +1,29 @@
-# deploy a default vpc and define its cidr_block
+# deploy a default vpc and define its cidr block
 
 resource "aws_vpc" "mainvpc" {
   cidr_block = "10.0.0.0/16"
+   tags = {
+    Name = "terraform_main_vpc"
+    terraform_managed = true
+  }
 }
 
 # deploy a /25 subnet from vpc subnet
 
 resource "aws_subnet" "dev_subnet" {
   vpc_id     = aws_vpc.mainvpc.id
-  cidr_block = "10.0.10.128/25"
+  cidr_block = "10.0.10.128/25" 
+  tags = {
+    Name = "terraform_dev_subnet"
+    terraform_managed = true
+  }
 }
 
 
-# deploy an internet gateway to allow ingress traffic over routable networks
+# deploy an internet gateway to allow traffic over routable networks
 
 resource "aws_internet_gateway" "internet_gw" {
-  vpc_id = aws_vpc.mainvpc.id
+  vpc_id = aws_vpc.mainvpc.id  
 }
 
 # fetch availability zones available for the selected region
@@ -30,58 +38,70 @@ resource "aws_subnet" "primary" {
   vpc_id            = aws_vpc.mainvpc.id
   cidr_block        = "10.0.11.0/24"
   availability_zone = element(data.aws_availability_zones.available.names, 0)
+  tags = {
+    Name = "terraform_primary_public_subnet"
+    terraform_managed = true
+  }
+
 }
 
 resource "aws_subnet" "secondary" {
   vpc_id            = aws_vpc.mainvpc.id
   cidr_block        = "10.0.12.0/24"
   availability_zone = element(data.aws_availability_zones.available.names, 1)
+  tags = {
+    Name = "terraform_secondary_public_subnet"
+    terraform_managed = true
+  }
+
 }
 
-# deploy routes to the default route table
+# deploy default route to the main route table
 
 resource "aws_route" "internet_access" {
   route_table_id         = aws_vpc.mainvpc.main_route_table_id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.internet_gw.id
+
 }
 
 # deploy a security group
 
-resource "aws_security_group" "ingress_ssh_egress_any" {
+resource "aws_security_group" "ingress_remote_management" {
   vpc_id      = aws_vpc.mainvpc.id
-  name        = "ingress_ssh_any_egress_any"
-  description = "ingress ssh from any, egress to any, dev only!"
+  name        = "terraform_ingress_remote_management_sg"
+  description = "ingress remote management ports over the internet and egress to any"
   tags = {
-    name = "ingress_ssh_egress_any"
+    Name = "terraform_ingress_remote_management_sg"
+    terraform_managed = true
   }
 }
 
-# deploy an ingress rule allowing ssh traffic from anywhere
+# deploy ingress rules for all ports specified in ingress_ports variable, allowing traffic from anywhere
 
-resource "aws_vpc_security_group_ingress_rule" "ingress_ssh" {
-  security_group_id = aws_security_group.ingress_ssh_egress_any.id
-  from_port         = 22
-  to_port           = 22
+resource "aws_vpc_security_group_ingress_rule" "ingress_management_ports" {
+  count = length(var.ingress_ports)
+  security_group_id = aws_security_group.ingress_remote_management.id
+  from_port         = var.ingress_ports[count.index]
+  to_port         = var.ingress_ports[count.index]
   ip_protocol       = "tcp"
   cidr_ipv4         = "0.0.0.0/0"
-}
-
-# deploy an ingress rule allowing rdp traffic from anywhere
-
-resource "aws_vpc_security_group_ingress_rule" "ingress_rdp" {
-  security_group_id = aws_security_group.ingress_ssh_egress_any.id
-  from_port         = 3389
-  to_port           = 3389
-  ip_protocol       = "tcp"
-  cidr_ipv4         = "0.0.0.0/0"
+  tags = {
+    Name = "ingress_rule_port_${var.ingress_ports[count.index]}"
+    terraform_managed = true
+  }
 }
 
 # deploy an egress rule to any
 
 resource "aws_vpc_security_group_egress_rule" "egress_any" {
-  security_group_id = aws_security_group.ingress_ssh_egress_any.id
+  security_group_id = aws_security_group.ingress_remote_management.id
   ip_protocol       = -1
   cidr_ipv4         = "0.0.0.0/0"
+  tags = {
+    Name = "egress_rule_any"
+    terraform_managed = true
+  }
+
 }
 

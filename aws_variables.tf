@@ -23,7 +23,11 @@ variable "aws_region" {
   type        = string
   description = "Region the EC2 Instance will be deployed to"
 }
-
+variable "ingress_ports" {
+  type = list(number)
+  description = "Ingress ports for the Security Group"
+  default = [ 22, 3389 ]
+}
 # declare OS name with at least 2 words
 
 variable "os" {
