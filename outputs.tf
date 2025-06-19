@@ -5,7 +5,7 @@ output "instance_public_ip" {
 
 output "image_name" {
   description = "Name of the AMI system image that was used for the EC2 Instance"
-  value       = data.aws_ami.query_ami.name
+  value       = data.aws_ami.ami_query.name
 }
 
 output "image_ami_id" {

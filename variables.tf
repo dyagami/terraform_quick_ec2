@@ -10,9 +10,15 @@ variable "aws_secret_key" {
   description = "AWS API admin secret key"
   sensitive   = true
 }
+
+
 variable "aws_instance_type" {
   type        = string
   description = "Type of EC2 Instance"
+  validation {
+    condition = contains(local.ami_instance_types[*], var.aws_instance_type)
+    error_message = "Wrong instance type for the ${local.ami_arch} architecture that the AMI image is based on. Please select one of the following instance types that are available for the ${local.ami_arch} architecture: \n\n${join(", ", local.ami_instance_types[*])}"
+  }
 }
 variable "aws_region" {
   type        = string
