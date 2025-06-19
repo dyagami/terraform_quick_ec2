@@ -16,7 +16,7 @@ variable "aws_instance_type" {
   type        = string
   description = "Type of EC2 Instance"
   validation {
-    condition = contains(local.ami_instance_types[*], var.aws_instance_type)
+    condition     = contains(local.ami_instance_types[*], var.aws_instance_type)
     error_message = "Wrong instance type for the ${local.ami_arch} architecture that the AMI image is based on. Please select one of the following instance types that are available for the ${local.ami_arch} architecture: \n\n${join(", ", local.ami_instance_types[*])}"
   }
 }
@@ -25,11 +25,11 @@ variable "aws_region" {
   description = "Region the EC2 Instance will be deployed to"
 }
 variable "aws_ami" {
-  type = string
+  type        = string
   description = "AMI image ID to be used by EC2"
-  validation  {
-    condition = length(var.aws_ami) > 4 && substr(var.aws_ami, 0, 4) == "ami-"
-  error_message = "Enter valid AMI name starting with \"ami-\""    
+  validation {
+    condition     = length(var.aws_ami) > 4 && substr(var.aws_ami, 0, 4) == "ami-"
+    error_message = "Enter valid AMI name starting with \"ami-\""
   }
 }
 variable "ingress_ports" {

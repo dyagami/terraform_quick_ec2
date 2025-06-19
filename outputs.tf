@@ -28,5 +28,5 @@ output "windows_administrator_password" {
 
 output "instance_type_details" {
   description = "Selected EC2 instance type details"
-  value = zipmap(["Selected Instance Type","Network Card Performance","vCPU Cores","Total RAM (MiB)","Total Storage (GB)","Free Tier Eligible"], [var.aws_instance_type,local.instance_type_net_perf,local.instance_type_vcpus,local.instance_type_memory,local.instance_type_storage,local.instance_type_free_tier])
+  value       = zipmap(["Selected Instance Type", "Network Card Performance", "vCPU Cores", "Total RAM (MiB)", "Total Storage (GB)", "Free Tier Eligible"], [var.aws_instance_type, local.instance_type_net_perf, local.instance_type_vcpus, local.instance_type_memory, local.instance_type_storage, local.instance_type_free_tier])
 }
