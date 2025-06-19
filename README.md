@@ -100,9 +100,18 @@ A Terraform configuration to quickly spin up an AWS EC2 VM with SSH/RDP over-the
 
     Terraform will output the ami image ID and name along with a direct link to the AMI image in AWS catalog aligned to your specified region for a quick double-check of the image before applying the infrastructure. The details of the instance type, including vCPUs, RAM, storage, network card interface speed and instance eligibility for the free plan will also be displayed, if known.
 
-    If you specify wrong instance type for the provided AMI image architecture, the code will error and provide you with available instance types. AWS has different instance type naming conventions for certain architectures like arm64.
+    If you specify wrong instance type for the provided AMI image architecture, the code will generate error and provide you with available instance types. AWS has different instance type naming conventions for certain architectures like arm64.
 
     ```
+    ╷
+    │ Error: Invalid value for variable
+    │ 
+    │   on terraform.tfvars line 3:
+    │    3: aws_instance_type = "t3.micro" # instance type, in this case t3.micro is free plan-eligible
+    │     ├────────────────
+    │     │ local.ami_instance_types is list of string with 159 elements
+    │     │ var.aws_instance_type is "t3.micro"
+    │ 
     │ Wrong instance type for the arm64 architecture that the AMI image is based on. Please select one of the following instance types that are available for the arm64 architecture: 
     │ 
     │ m8g.8xlarge, c7g.16xlarge, r6gd.2xlarge, r8g.4xlarge, c6gd.metal, r6g.medium, r6g.8xlarge, m6gd.xlarge, m8g.24xlarge, c8g.8xlarge, r6gd.xlarge, m7gd.16xlarge, r8g.12xlarge, r8g.16xlarge, m7g.4xlarge, m6gd.4xlarge, r6g.large, t4g.nano, m7gd.large, m6gd.medium, m7g.large,
@@ -114,7 +123,7 @@ A Terraform configuration to quickly spin up an AWS EC2 VM with SSH/RDP over-the
     │ c6gd.2xlarge, r6g.metal, r7g.12xlarge, c8g.16xlarge, r7g.large, m6gd.2xlarge, r6g.xlarge, r6g.2xlarge, r7gd.12xlarge, c6gd.4xlarge, c6g.2xlarge, c6g.4xlarge, c6g.medium, c8g.xlarge, r7g.16xlarge, c6g.8xlarge, m6g.medium, m6gd.large, c7gd.4xlarge, c6gd.medium, m8g.metal-24xl,
     │ c7g.12xlarge, r8g.2xlarge, m8g.medium, r6gd.12xlarge, c6gd.large, m6g.2xlarge, m7gd.2xlarge, c6gd.8xlarge, r8g.8xlarge, c6g.metal, c6gd.12xlarge
     │ 
-    │ This was checked by the validation rule at variables.tf:18,3-13.
+    │ This was checked by the validation rule at variables.tf:18,3-13.    
     ```
 
     If you are satisfied with the plan, run `terraform apply` to deploy the infrastructure.
