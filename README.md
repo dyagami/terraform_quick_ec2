@@ -100,7 +100,24 @@ A Terraform configuration to quickly spin up an AWS EC2 VM with SSH/RDP over-the
 
     Terraform will output the ami image ID and name along with a direct link to the AMI image in AWS catalog aligned to your specified region for a quick double-check of the image before applying the infrastructure. The details of the instance type, including vCPUs, RAM, storage, network card interface speed and instance eligibility for the free plan will also be displayed, if known.
 
-    `terraform apply`
+    If you specify wrong instance type for the provided AMI image architecture, the code will error and provide you with available instance types. AWS has different instance type naming conventions for certain architectures like arm64.
+
+    ```
+    │ Wrong instance type for the arm64 architecture that the AMI image is based on. Please select one of the following instance types that are available for the arm64 architecture: 
+    │ 
+    │ m8g.8xlarge, c7g.16xlarge, r6gd.2xlarge, r8g.4xlarge, c6gd.metal, r6g.medium, r6g.8xlarge, m6gd.xlarge, m8g.24xlarge, c8g.8xlarge, r6gd.xlarge, m7gd.16xlarge, r8g.12xlarge, r8g.16xlarge, m7g.4xlarge, m6gd.4xlarge, r6g.large, t4g.nano, m7gd.large, m6gd.medium, m7g.large,
+    │ r6gd.medium, m7gd.xlarge, c8g.24xlarge, c6gn.16xlarge, c6g.16xlarge, c7g.8xlarge, r6g.16xlarge, m6gd.12xlarge, r7gd.8xlarge, c7gd.medium, r8g.metal-24xl, m8g.large, c8g.2xlarge, m8g.metal-48xl, c8g.48xlarge, m6g.metal, r7gd.16xlarge, r8g.large, t4g.2xlarge, c7g.xlarge, r8g.medium,
+    │ m6g.xlarge, m8g.16xlarge, c6gn.xlarge, r7gd.xlarge, c6gn.4xlarge, m6gd.16xlarge, c8g.large, m7g.16xlarge, r7g.medium, c7g.4xlarge, r6gd.metal, r7g.2xlarge, c6g.xlarge, t4g.medium, c6g.12xlarge, m6gd.metal, c7gd.16xlarge, m7g.12xlarge, r7g.xlarge, r6gd.large, m7gd.12xlarge,
+    │ r6g.4xlarge, r7g.metal, m7gd.8xlarge, c6gn.12xlarge, c8g.metal-48xl, r7g.8xlarge, r6g.12xlarge, m7g.xlarge, r7gd.2xlarge, m7gd.medium, m7g.8xlarge, t4g.small, c8g.12xlarge, r7gd.medium, r8g.48xlarge, m6g.4xlarge, c6gn.medium, m8g.12xlarge, c6gd.xlarge, m8g.4xlarge, m8g.xlarge,
+    │ m7gd.4xlarge, m6g.8xlarge, r8g.24xlarge, c6gd.16xlarge, c7gd.large, c7gd.xlarge, r7gd.4xlarge, t4g.large, m6g.large, c6g.large, r6gd.4xlarge, m7gd.metal, c6gn.large, c8g.medium, m6g.16xlarge, m8g.48xlarge, r7gd.metal, t4g.micro, m8g.2xlarge, r7gd.large, c7gd.metal, r8g.metal-48xl,
+    │ r7g.4xlarge, c7gd.8xlarge, c7g.large, c6gn.8xlarge, c7g.metal, c7g.medium, m7g.metal, r6gd.8xlarge, c6gn.2xlarge, m7g.2xlarge, m7g.medium, c7g.2xlarge, r8g.xlarge, c8g.metal-24xl, m6gd.8xlarge, m6g.12xlarge, c7gd.2xlarge, c7gd.12xlarge, r6gd.16xlarge, t4g.xlarge, c8g.4xlarge,
+    │ c6gd.2xlarge, r6g.metal, r7g.12xlarge, c8g.16xlarge, r7g.large, m6gd.2xlarge, r6g.xlarge, r6g.2xlarge, r7gd.12xlarge, c6gd.4xlarge, c6g.2xlarge, c6g.4xlarge, c6g.medium, c8g.xlarge, r7g.16xlarge, c6g.8xlarge, m6g.medium, m6gd.large, c7gd.4xlarge, c6gd.medium, m8g.metal-24xl,
+    │ c7g.12xlarge, r8g.2xlarge, m8g.medium, r6gd.12xlarge, c6gd.large, m6g.2xlarge, m7gd.2xlarge, c6gd.8xlarge, r8g.8xlarge, c6g.metal, c6gd.12xlarge
+    │ 
+    │ This was checked by the validation rule at variables.tf:18,3-13.
+    ```
+
+    If you are satisfied with the plan, run `terraform apply` to deploy the infrastructure.
 
 7. **Connect to the newly created VM instance**
 
