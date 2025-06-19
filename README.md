@@ -16,7 +16,7 @@ A Terraform configuration to quickly spin up an AWS EC2 VM with SSH/RDP over-the
 1. **Prepare Your Environment**
 
 2. **Clone this repository** ```git clone https://github.com/dyagami/terraform_quick_ec2.git```
-  
+
 3. **Create an IAM user and generate an Access Key with the following permissions:**
     - `AmazonEC2FullAccess`
     - `IAMReadOnlyAccess` (for Terraform to read IAM resources)
