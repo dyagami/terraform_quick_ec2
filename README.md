@@ -107,7 +107,7 @@ A Terraform configuration to quickly spin up an AWS EC2 VM with SSH/RDP over-the
     │ Error: Invalid value for variable
     │ 
     │   on terraform.tfvars line 3:
-    │    3: aws_instance_type = "t3.micro" # instance type, in this case t3.micro is free plan-eligible
+    │    3: aws_instance_type = "t3.micro"
     │     ├────────────────
     │     │ local.ami_instance_types is list of string with 159 elements
     │     │ var.aws_instance_type is "t3.micro"
