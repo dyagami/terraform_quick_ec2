@@ -69,7 +69,7 @@ A Terraform configuration to quickly spin up an AWS EC2 VM with SSH/RDP over-the
 
 5. **Generate RSA key pair**
 
-    `ssh-keygen -t rsa -b 4096 -m PEM -N "" -f admin_key`
+    `ssh-keygen -t rsa -b 4096 -m PEM -N "" -f ./admin_key`
 
     This command will generate an *SSH RSA 4096 bit key pair in PEM format* in the project's directory using filename "admin_key" with no password on the private key..
 
