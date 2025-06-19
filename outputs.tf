@@ -25,3 +25,8 @@ output "windows_administrator_password" {
   description = "Administrator password for the Windows machine (for example, for RDP connection purposes)"
   value       = aws_instance.terraform_quick_ec2.password_data != "" ? rsadecrypt(aws_instance.terraform_quick_ec2.password_data, file("${path.root}/admin_key")) : null
 }
+
+output "instance_type_details" {
+  description = "Selected EC2 instance type details"
+  value = zipmap(["Selected Instance Type","Network Card Performance","vCPU Cores","Total RAM (MiB)","Total Storage (GB)","Free Tier Eligible"], [var.aws_instance_type,local.instance_type_net_perf,local.instance_type_vcpus,local.instance_type_memory,local.instance_type_storage,local.instance_type_free_tier])
+}

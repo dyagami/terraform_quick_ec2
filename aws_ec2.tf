@@ -16,10 +16,19 @@ data "aws_ec2_instance_types" "instance_types_query" {
   }
 }
 
+data "aws_ec2_instance_type" "instance_type_info" {
+  instance_type = var.aws_instance_type
+}
+
 locals {
   ami_arch = data.aws_ami.ami_query.architecture
   ami_platform = data.aws_ami.ami_query.platform
   ami_instance_types = data.aws_ec2_instance_types.instance_types_query.instance_types
+  instance_type_vcpus = data.aws_ec2_instance_type.instance_type_info.default_vcpus != null ? data.aws_ec2_instance_type.instance_type_info.default_vcpus : "Not specified" 
+  instance_type_memory = data.aws_ec2_instance_type.instance_type_info.memory_size  != null ? data.aws_ec2_instance_type.instance_type_info.memory_size : "Not specified"
+  instance_type_storage = data.aws_ec2_instance_type.instance_type_info.total_instance_storage != null ? data.aws_ec2_instance_type.instance_type_info.total_instance_storage : "Not specified"
+  instance_type_free_tier = data.aws_ec2_instance_type.instance_type_info.free_tier_eligible != null ? data.aws_ec2_instance_type.instance_type_info.free_tier_eligible : "Not specified"
+  instance_type_net_perf = data.aws_ec2_instance_type.instance_type_info.network_performance != null ? data.aws_ec2_instance_type.instance_type_info.network_performance : "Not specified"
 }
 
 # deploy a new ec2 vm resource

@@ -83,14 +83,22 @@ A Terraform configuration to quickly spin up an AWS EC2 VM with SSH/RDP over-the
 
     (...)
 
-    # Changes to Outputs:
-    #  + ami_link           = "https://eu-north-1.console.aws.amazon.com/ec2/home?region=eu-north-1#ImageDetails:imageId=ami-068011ee7bf544493"
-    #  + image_ami_id       = "ami-068011ee7bf544493"
-    #  + image_name         = "ubuntu/images-testing/hvm-ssd-gp3/ubuntu-questing-daily-amd64-server-20250601"
-    #  + instance_public_ip = (known after apply)
+    + ami_link                       = "https://eu-north-1.console.aws.amazon.com/ec2/home?region=eu-north-1#ImageDetails:imageId=ami-068011ee7bf544493"
+    + image_ami_id                   = "ami-068011ee7bf544493"
+    + image_name                     = "ubuntu/images-testing/hvm-ssd-gp3/ubuntu-questing-daily-amd64-server-20250601"
+    + instance_public_ip             = (known after apply)
+    + instance_type_details          = {
+        + "Free Tier Eligible"       = "true"
+        + "Network Card Performance" = "Up to 5 Gigabit"
+        + "Selected Instance Type"   = "t3.micro"
+        + "Total RAM (MiB)"          = "1024"
+        + "Total Storage (GB)"       = "Not specified"
+        + "vCPU Cores"               = "2"
+        }
+    + windows_administrator_password = (known after apply)    
     ```
 
-    Terraform will output the ami image ID and name along with a direct link to the AMI image in AWS catalog aligned to your specified region for a quick double-check of the image before applying the infrastructure.
+    Terraform will output the ami image ID and name along with a direct link to the AMI image in AWS catalog aligned to your specified region for a quick double-check of the image before applying the infrastructure. The details of the instance type, including vCPUs, RAM, storage, network card interface speed and instance eligibility for the free plan will also be displayed, if known.
 
     `terraform apply`
 
