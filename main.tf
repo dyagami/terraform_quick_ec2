@@ -1,3 +1,36 @@
+# specify provider version constraints
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">=6.0.0-beta1"
+    }
+
+  }
+}
+
+# define aws provider
+
+provider "aws" {
+  region     = var.aws_region
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
+}
+
+# read admin rsa pubkey from module directory
+
+data "local_file" "rsa_pubkey" {
+  filename = "${path.root}/admin_key.pub"
+}
+
+# deploy admin ssh keypair
+
+resource "aws_key_pair" "terraform_rsa_pubkey" {
+  key_name   = "terraform_admin_ssh_key"
+  public_key = data.local_file.rsa_pubkey.content
+}
+
 # query the ami using provided ami id to check if it is windows-based (to determine if password data should be retrieved)
 
 data "aws_ami" "ami_query" {
